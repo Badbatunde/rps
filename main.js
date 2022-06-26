@@ -1,4 +1,4 @@
-// function that randomly returns item from array
+// function that randomly returns computer selection
 
 function computerPlay () {
     let computerRandom = computerList[Math.floor(Math.random() * 3)]
@@ -10,58 +10,49 @@ let computerList = ['rock', 'paper', 'scissors']
 let playerScore = 0;
 let comScore = 0;
 
+let buttons = document.querySelectorAll('button')
+buttons.forEach (button => {
+    button.addEventListener('click', function() {
+        playRound(button.value, computerPlay())
+    })
+})
+
+function disableBtns () {
+    buttons.forEach (button => {
+        button.disabled = true
+    })
+}
+
+let result = document.querySelector('#result');
+
 function playRound (playerSelection, computerSelection) {
-    if (playerSelection === 'rock' && computerSelection === 'paper') {
-    return `You Lose! Paper beats Rock. ${comScore++}` ;
-    } else if (playerSelection === 'rock' && computerSelection === 'rock') {
-    return 'Oh! It is a tie.';
-    } else if (playerSelection === 'rock' && computerSelection === 'scissors') {
-        return `You Win! Rock trumps Scissors. ${playerScore++}` ;
-    } else if (playerSelection === 'paper' && computerSelection === 'paper') {
-        return 'Oh! It is a tie.';
-    } else if (playerSelection === 'paper' && computerSelection === 'scissors') {
-        return `You Lose! Scissors cuts Paper. ${comScore++}`;
-    } else if (playerSelection === 'paper' && computerSelection === 'rock') {
-        return `You Win! Paper covers Rock. ${playerScore++}`;
-    } else if (playerSelection === 'scissors' && computerSelection === 'rock') {
-        return `You Lose! Rock trumps Scissors. ${comScore++}`;
-    } else if (playerSelection === 'scissors' && computerSelection === 'paper') {
-        return `You Win! Scissors cuts Paper. ${playerScore++}`;
-    } else if (playerSelection === 'scissors' && computerSelection === 'scissors') {
-        return 'Oh! It is a tie.';
-    } else {
-        return 'Wrong input! Input either rock, paper or scissors'
+    let result = 'begin game'
+    if (playerSelection == computerSelection) {
+        result = `<br>Oh! It is a tie. <br> <br>Computer: ${comScore} <br> Player: ${playerScore}<br><br>`
     }
-}
+    else if ((playerSelection === 'rock' && computerSelection === 'scissors') ||
+            (playerSelection === 'paper' && computerSelection === 'rock') || 
+            (playerSelection === 'scissors' && computerSelection === 'paper')) {
+                ++playerScore;
+                result = `<br>You win! ${playerSelection} beats ${computerSelection} <br><br>
+                Computer: ${comScore} <br> Player: ${playerScore} <br><br>`
 
-let playerSelection = prompt('Rock, Paper or Scissors?', '').toLowerCase();
-let computerSelection = computerPlay();
-let play = playRound (playerSelection, computerSelection);
-
-
-function game () {
-    for (let i = 0; i < 5; i++) {};
-    console.log (`Player: ${playerScore}, Computer: ${comScore}`)
-    prompt('Rock, Paper or Scissors?', '').toLowerCase()
-    {playRound (playerSelection, computerPlay());}
-    console.log (`Player: ${playerScore}, Computer: ${comScore}`)
-    prompt('Rock, Paper or Scissors?', '').toLowerCase()
-    {playRound (playerSelection, computerPlay());}
-    console.log (`Player: ${playerScore}, Computer: ${comScore}`)
-    prompt('Rock, Paper or Scissors?', '').toLowerCase()
-    {playRound (playerSelection, computerPlay());}
-    console.log (`Player: ${playerScore}, Computer: ${comScore}`)
-    prompt('Rock, Paper or Scissors?', '').toLowerCase()
-    {playRound (playerSelection, computerPlay());}
-    console.log (`Player: ${playerScore}, Computer: ${comScore}`)
-    if (playerScore > comScore) {
-        console.log ('Congratulations! You won the game.');
-    } else if (playerScore < comScore) {
-        console.log ('Computer wins! Try again.')
-    } else {
-        console.log ('It is a draw!')
+                if (playerScore == 5) {
+                    result += `You won the game! <a href = ""> Play again. </a><br><br>`
+                    disableBtns ();
+                }
     }
+    else { 
+        comScore++;
+        result = `<br>You lose! ${computerSelection} beats ${playerSelection} <br><br>
+        Computer: ${comScore} <br> Player: ${playerScore} <br><br>`
+
+        if (comScore == 5) {
+            result += `You lost the game! <a href = ""> Try Again </a> <br><br>`
+            disableBtns ();
+        }
+    }
+
+    document.getElementById('result').innerHTML = result;
+    return
 }
-game();
-
-
