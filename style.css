@@ -38,8 +38,16 @@ button {
 
 a {
   text-decoration: none;
-  color: black;
+  color: white;
   font-weight: 600;
+}
+
+.learn a {
+  color: black;
+}
+
+.footer a {
+  color: black;
 }
 
 #result {
